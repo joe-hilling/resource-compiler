@@ -7,7 +7,7 @@
     "test": "test"
   },
   "dependencies": {
-    "tag-parser": "https://git@github.com//joe-hilling/tag-parser"
+    "tag-parser": "git+https://git@github.com//joe-hilling/tag-parser"
   },
   "devDependencies": {},
   "scripts": {
