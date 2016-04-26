@@ -19,6 +19,7 @@ function findResources(str){
 			name    : t.properties.name,
 			type    : t.properties.type,
 			content : t.content.trim(),
+			encoded_content : encodeURI(t.content.trim()),
 			text    : t.text
 		}
 
@@ -86,7 +87,13 @@ var parser = function(str, rdict){
 
 	str = replaceTargets(str, targets, resources)
 
-	return str
+	
+
+	return {
+		targets : targets,
+		resources : resources,
+		value : str
+	}
 
 }
 

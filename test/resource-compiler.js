@@ -1,4 +1,6 @@
-var should = require('should')
+var should = require('should'),
+	parser = require('../resource-compiler.js')
+
 
 
 describe('resource-compiler', function(){
@@ -7,28 +9,28 @@ describe('resource-compiler', function(){
 
 		
 		it('should parse', function(){
-			parser._findResources("<resource name='a'></resource>").keys().should.have.length(1)
+			Object.keys(parser._findResources("<resource name='a'></resource>")).should.have.length(1)
 		})
 
 		it('should parse', function(){
-			parser._findResources("<resource name='b'>non empty</resource>").keys().should.have.length(1)
+			Object.keys(parser._findResources("<resource name='b'>non empty</resource>")).should.have.length(1)
 		})
 
 		it('should parse', function(){
-			parser._findResources("<resource name='c'></resource>").keys().should.have.length(1)
+			Object.keys(parser._findResources("<resource name='c'></resource>")).should.have.length(1)
 		})
 
 		it('should parse', function(){
-			parser._findResources("<resource name='d'>a/r/n b</resource>").keys().should.have.length(1)
+			Object.keys(parser._findResources("<resource name='d'>a/r/n b</resource>")).should.have.length(1)
 		})
 
 		// Multiple 
 		it('should parse', function(){
-			parser._findResources("<resource name='yo'>a</resource>b<resource name='yeah'>c</resource>").keys().should.have.length(2)
+			Object.keys(parser._findResources("<resource name='yo'>a</resource>b<resource name='yeah'>c</resource>")).should.have.length(2)
 		})
 
 		it('should parse', function(){
-			parser._findResources("<resource name='pu'>X\r\n</resource>Y<resource name='po'>\nZ</resource>").keys().should.have.length(2)
+			Object.keys(parser._findResources("<resource name='pu'>X\r\n</resource>Y<resource name='po'>\nZ</resource>")).should.have.length(2)
 		})
 
 	})
@@ -111,5 +113,19 @@ describe('resource-compiler', function(){
 			decodeURI(obj.message).should.equal('hello Joe Hilling')
 		})
 	})
+
+	describe('getting the right information back', function(){
+
+		it('should work', function(){
+
+			var str = ['{ "message" : "hello <<username>>" }',
+					   '<resource name="username">Joe Hilling</resource>'].join('\n')
+			
+			var out = parser(str)
+			out.resources.username.encoded_content.should.equal('Joe%20Hilling')
+		})
+
+	})
+
 
 })
