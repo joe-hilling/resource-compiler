@@ -122,10 +122,32 @@ describe('resource-compiler', function(){
 					   '<resource name="username">Joe Hilling</resource>'].join('\n')
 			
 			var out = parser(str)
-			out.resources.username.encoded_content.should.equal('Joe%20Hilling')
+
+			out.resources.username.replacement.should.equal('Joe Hilling')
 		})
 
 	})
+
+	describe('modify the dictionary', function(){
+
+		it('should work', function(){
+
+			var str = ['hello <<username>><resource name="username">Joe Hilling</resource>'].join('\n')
+			
+			var out = parser(str)
+
+			// inserts encoded
+			out.value().should.equal('hello Joe Hilling')
+
+			out.resources.username.replacement ='Monty'
+
+			out.value().should.equal('hello Monty')
+
+
+		})
+
+	})
+
 
 
 })
